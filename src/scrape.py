@@ -4,7 +4,6 @@ from selenium import webdriver
 raw_url = "https://www.google.com/search?q="
 
 driver = webdriver.Chrome()
-driver.get(raw_url)
 
 for word in open("../input/words.txt", 'r'):
     url = f"{raw_url}{word.rstrip()}+ap+euro+definition"
