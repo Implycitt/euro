@@ -1,20 +1,17 @@
-import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
 raw_url = "https://www.google.com/search?q="
 
-headers = {
-  "User-Agent":
-  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.19582"
-}
+driver = webdriver.Chrome()
+driver.get(raw_url)
 
 for word in open("../input/words.txt", 'r'):
-    url = f"{raw_url}{word}+ap+euro+definition"
-    request = requests.get(url, headers=headers)
-    soup = BeautifulSoup(request.text, 'html.parser')
-    print(soup)
-    result = soup.find('div', class_='hgKElc')
-    print(result)
-    #result = soup.find('div', class_='hgKElc')
-    #open("output.txt", 'w').write(result.text)
+    url = f"{raw_url}{word.rstrip()}+ap+euro+definition"
+    driver.get(url)
+    page = driver.page_source
+    soup = BeautifulSoup(page, "html.parser")
+    quotes = soup.findAll("span", attrs={"class": "hgKElc"})
+    print(quotes)
+
+driver.close()
